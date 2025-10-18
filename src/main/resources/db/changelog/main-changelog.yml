@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include: 
       file: db/changelog/version1/changelog-1-create-table-auth-users.yml
+  - include:
+      file: db/changelog/version1/changelog-2-add-user-id-column.yml

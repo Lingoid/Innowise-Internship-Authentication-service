@@ -1,5 +1,6 @@
 package com.innowise.authservice.authservice.controller;
 
+import com.innowise.authservice.authservice.dto.FullUserInfoDTO;
 import com.innowise.authservice.authservice.model.AuthUser;
 import com.innowise.authservice.authservice.repository.AuthUserRepository;
 import com.innowise.authservice.authservice.service.LoginService;
@@ -7,10 +8,7 @@ import com.innowise.authservice.authservice.service.RegistrationService;
 import com.innowise.authservice.authservice.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -26,8 +24,8 @@ public class AuthController {
     private final AuthUserRepository authUserRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthUser authUser){
-        registrationService.register(authUser);
+    public ResponseEntity<?> register(@RequestBody FullUserInfoDTO fullUserInfoDT){
+        registrationService.register(fullUserInfoDT);
         return ResponseEntity.ok("User has been registered");
     }
 
@@ -52,8 +50,8 @@ public class AuthController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<?> validate(@RequestBody Map<String, String> request) {
-        String token = request.get("token");
+    public ResponseEntity<?> validate(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
         String username = tokenService.extractUsername(token);
 
         return authUserRepository.findByUserName(username)

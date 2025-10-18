@@ -13,7 +13,7 @@ public class ErrorHandler {
     @ExceptionHandler(AuthUserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFound(AuthUserNotFoundException e) {
         return new ResponseEntity<>(
-                new ErrorResponse(e.getMessage(), LocalDateTime.now()),
+                new ErrorResponse("Internal server error", LocalDateTime.now()),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -30,11 +30,17 @@ public class ErrorHandler {
                 new ErrorResponse(e.getMessage(), LocalDateTime.now()),
                 HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(FailedRegistrationException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidToken(FailedRegistrationException e) {
+        return new ResponseEntity<>(
+                new ErrorResponse(e.getMessage(), LocalDateTime.now()),
+                HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAll(Exception e) {
         return new ResponseEntity<>(
-                new ErrorResponse("Internal Server Error", LocalDateTime.now()), HttpStatus.INTERNAL_SERVER_ERROR);
+                new ErrorResponse(e.getMessage(), LocalDateTime.now()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
