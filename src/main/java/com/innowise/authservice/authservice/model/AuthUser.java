@@ -16,6 +16,9 @@ public class AuthUser{
     @GeneratedValue
     private Long id;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(nullable = false, unique = true)
     private String userName;
 
@@ -25,5 +28,6 @@ public class AuthUser{
 
     @Column(nullable = false)
     private String password;
+
 
 }

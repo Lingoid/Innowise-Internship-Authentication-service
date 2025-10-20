@@ -22,12 +22,15 @@ public class AuthUserRepository {
         private static final String INSERT_USER =
                 "INSERT INTO auth_users (user_name, email, password) " +
                         "VALUES (:userName, :email, :password) RETURNING id";
+        private static final String UPDATE_USER =
+                "UPDATE auth_users SET user_id = :userId WHERE id = :id";
 
         private static final String SELECT_BY_USERNAME =
                 "SELECT * FROM auth_users WHERE user_name = :userName";
 
         private static final String DELETE_ALL =
                 "DELETE FROM auth_users";
+
     }
 
     public Optional<AuthUser> findByUserName(String userName) {
@@ -51,6 +54,10 @@ public class AuthUserRepository {
         );
         user.setId(id);
         return user;
+    }
+
+    public void updateUserId(AuthUser user) {
+        jdbcTemplate.update(SQL.UPDATE_USER, new BeanPropertySqlParameterSource(user));
     }
 
     public void deleteAll() {

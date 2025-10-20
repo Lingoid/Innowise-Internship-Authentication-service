@@ -12,5 +12,13 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  liquibase:
+    change-log: db/changelog/main-changelog.yml
+    enabled: true
+
 jwt:
   secret: ${JWT_SECRET}
+
+user:
+  service:
+    url: ${REGISTER_USER_URL}
